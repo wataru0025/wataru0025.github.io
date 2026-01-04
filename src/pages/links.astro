@@ -1,0 +1,25 @@
+---
+import PageLayout from "@layouts/PageLayout.astro";
+import Container from "@components/Container.astro";
+import { SITE } from "@consts";
+---
+
+<PageLayout title="Links" description="Friends and other interesting sites">
+  <Container>
+    <h1 class="font-semibold text-2xl mb-6">Links</h1>
+    
+    <div class="space-y-4">
+      <a href="https://友達のサイトのURL" target="_blank" class="block p-4 border border-black/15 dark:border-white/20 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+        <h3 class="font-semibold">友達の名前</h3>
+        <p class="text-sm opacity-75">サイトの説明文</p>
+      </a>
+
+      <a href="https://google.com" target="_blank" class="block p-4 border border-black/15 dark:border-white/20 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+        <h3 class="font-semibold">Google先生</h3>
+        <p class="text-sm opacity-75">困ったらいつもここに頼っています。</p>
+      </a>
+
+      </div>
+
+  </Container>
+</PageLayout>
