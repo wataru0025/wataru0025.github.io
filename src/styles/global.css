@@ -19,14 +19,16 @@ body {
 body {
   @apply font-sans antialiased;
   @apply flex flex-col;
-  @apply bg-stone-100 dark:bg-stone-900;
-  @apply text-black/50 dark:text-white/75;
+  @apply bg-gradient-to-br from-stone-50 via-stone-100 to-stone-200 dark:from-stone-950 dark:via-stone-900 dark:to-stone-800;
+  @apply text-black/60 dark:text-white/80;
 }
 
 header {
   @apply fixed top-0 left-0 right-0 z-50 py-5;
-  @apply bg-stone-100/75 dark:bg-stone-900/25;
-  @apply backdrop-blur-sm saturate-200;
+  @apply bg-stone-50/80 dark:bg-stone-950/40;
+  @apply backdrop-blur-md saturate-150;
+  @apply border-b border-black/5 dark:border-white/5;
+  @apply shadow-sm shadow-black/5 dark:shadow-white/5;
 }
 
 main {
@@ -46,17 +48,18 @@ article {
 @layer utilities {
   article a {
     @apply font-sans text-current underline underline-offset-2;
-    @apply decoration-black/15 dark:decoration-white/30;
-    @apply transition-colors duration-300 ease-in-out;
+    @apply decoration-black/20 dark:decoration-white/30;
+    @apply transition-all duration-300 ease-in-out;
   }
   article a:hover {
     @apply text-black dark:text-white;
-    @apply decoration-black/25 dark:decoration-white/50;
+    @apply decoration-black/40 dark:decoration-white/60;
+    @apply underline-offset-4;
   }
 }
 
 .animate {
-  @apply opacity-0 translate-y-3;
+  @apply opacity-0 translate-y-4;
   @apply transition-all duration-700 ease-out;
 }
 

@@ -1,0 +1,259 @@
+---
+
+import PageLayout from "@layouts/PageLayout.astro";
+
+import Container from "@components/Container.astro";
+
+import { SITE } from "@consts";
+
+---
+
+
+
+<PageLayout title="About Me" description="About Cotton - Profile, PC Specs, and More">
+
+  <Container>
+
+  <div class="bg-stone-100 dark:bg-stone-900 rounded-lg p-6 min-h-screen">
+
+      <h1 class="font-semibold text-3xl mb-8 text-black dark:text-white animate">About Me</h1>
+
+
+
+      <div class="space-y-12">
+
+      <!-- Profile Section -->
+
+      <section class="animate space-y-4">
+
+        <h2 class="font-semibold text-2xl text-black dark:text-white">プロフィール</h2>
+
+        <div class="space-y-3 text-base leading-relaxed">
+
+          <div class="flex gap-3">
+
+            <span class="font-semibold text-black dark:text-white min-w-[100px]">名前:</span>
+
+            <span class="opacity-75">Cotton</span>
+
+          </div>
+
+          <div class="flex gap-3">
+
+            <span class="font-semibold text-black dark:text-white min-w-[100px]">所属:</span>
+
+            <span class="opacity-75">電気通信大学 情報理工学域 I類</span>
+
+          </div>
+
+          <!-- <div class="flex gap-3">
+
+            <span class="font-semibold text-black dark:text-white min-w-[100px]">専攻:</span>
+
+            <span class="opacity-75">I類</span>
+
+          </div>
+
+          <div class="flex gap-3">
+
+            <span class="font-semibold text-black dark:text-white min-w-[100px]">学年:</span>
+
+            <span class="opacity-75">B1</span>
+
+          </div> -->
+
+        </div>
+
+      </section>
+
+
+
+      <!-- Interests Section -->
+
+      <section class="animate space-y-4">
+
+        <h2 class="font-semibold text-2xl text-black dark:text-white">趣味・興味など</h2>
+
+        <ul class="space-y-2 text-base">
+
+          <li class="flex items-start gap-2">
+
+            <span class="opacity-75">•</span>
+
+            <span class="opacity-75">競技プログラミング</span>
+
+          </li>
+
+          <li class="flex items-start gap-2">
+
+            <span class="opacity-75">•</span>
+
+            <span class="opacity-75">アプリ開発(今がんばってます)</span>
+
+          </li>
+
+          <li class="flex items-start gap-2">
+
+            <span class="opacity-75">•</span>
+
+            <span class="opacity-75">ゲーム(LoL,Valorant,etc...)</span>
+
+          </li>
+
+        </ul>
+
+      </section>
+
+
+
+      <!-- Skills Section -->
+
+      <section class="animate space-y-4">
+
+        <h2 class="font-semibold text-2xl text-black dark:text-white">スキル・技術</h2>
+
+        <div class="space-y-4">
+
+          <div>
+
+            <h3 class="font-semibold text-lg text-black dark:text-white mb-2">プログラミング言語</h3>
+
+            <ul class="flex flex-wrap gap-2">
+
+              <li class="px-3 py-1 bg-black/5 dark:bg-white/10 rounded-full text-sm">Python</li>
+
+              <li class="px-3 py-1 bg-black/5 dark:bg-white/10 rounded-full text-sm">Latex</li>
+
+              <li class="px-3 py-1 bg-black/5 dark:bg-white/10 rounded-full text-sm">C++</li>
+
+              <!-- <li class="px-3 py-1 bg-black/5 dark:bg-white/10 rounded-full text-sm">追加してください</li> -->
+
+            </ul>
+
+          </div>
+
+          <div>
+
+            <h3 class="font-semibold text-lg text-black dark:text-white mb-2">ツール等</h3>
+
+            <ul class="flex flex-wrap gap-2">
+
+              <li class="px-3 py-1 bg-black/5 dark:bg-white/10 rounded-full text-sm">Aviutl</li>
+
+              <li class="px-3 py-1 bg-black/5 dark:bg-white/10 rounded-full text-sm">Blender</li>
+
+            </ul>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- PC Specs Section -->
+
+      <section class="animate space-y-4">
+
+        <h2 class="font-semibold text-2xl text-black dark:text-white">PC環境</h2>
+
+        <div class="p-4 bg-black/5 dark:bg-white/5 rounded-lg space-y-3">
+
+          <div>
+
+            <div class="font-semibold text-black dark:text-white mb-1">CPU</div>
+
+            <div class="text-sm opacity-75">Ryzen 7 9800XX3D 8-Core</div>
+
+          </div>
+
+          <div>
+
+            <div class="font-semibold text-black dark:text-white mb-1">GPU</div>
+
+            <div class="text-sm opacity-75">NVIDIA GeForce RTX 5070</div>
+
+          </div>
+
+          <div>
+
+            <div class="font-semibold text-black dark:text-white mb-1">RAM</div>
+
+            <div class="text-sm opacity-75">32GB</div>
+
+          </div>
+
+          <div>
+
+            <div class="font-semibold text-black dark:text-white mb-1">Storage</div>
+
+            <div class="text-sm opacity-75">SSD 1TB/HDD 6TB</div>
+
+          </div>
+
+          <div>
+
+            <div class="font-semibold text-black dark:text-white mb-1">OS</div>
+
+            <div class="text-sm opacity-75">Windows 11 Home</div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- Hobbies Section -->
+
+      <!-- <section class="animate space-y-4">
+
+        <h2 class="font-semibold text-2xl text-black dark:text-white">趣味</h2>
+
+        <ul class="space-y-2 text-base">
+
+          <li class="flex items-start gap-2">
+
+            <span class="opacity-75">•</span>
+
+            <span class="opacity-75">趣味を追加してください</span>
+
+          </li>
+
+          <li class="flex items-start gap-2">
+
+            <span class="opacity-75">•</span>
+
+            <span class="opacity-75">趣味を追加してください</span>
+
+          </li>
+
+        </ul>
+
+      </section> -->
+
+
+
+      <!-- Additional Info Section -->
+
+      <!-- <section class="animate space-y-4">
+
+        <h2 class="font-semibold text-2xl text-black dark:text-white">その他</h2>
+
+        <div class="text-base leading-relaxed opacity-75">
+
+          <p>追加で書きたいことがあればここに記入してください。</p>
+
+        </div>
+
+      </section> -->
+
+      </div>
+
+    </div>
+
+  </Container>
+
+</PageLayout>

@@ -32,21 +32,22 @@ const work = await Promise.all(
 
 <PageLayout title={HOME.TITLE} description={HOME.DESCRIPTION}>
   <Container>
-    <h4 class="animate font-semibold text-black dark:text-white">
-      Hi, I'm Cotton <span class="text-xl">👋🏻</span> 
-    </h4>
-    <div class="space-y-16">
-      <section>
-        <article class="space-y-4">
-          <p class="animate">
-            電気通信大学の情報理工学域に通っている大学生です。競技プログラミングやアプリ開発に興味があります。
-          </p>
-        </article>
-      </section>
+    <div class="space-y-3 mb-8">
+      <h4 class="animate font-semibold text-2xl text-black dark:text-white">
+        Cotton's Homepage <span class="text-2xl">👋🏻</span>
+      </h4>
+      <article class="space-y-4">
+        <p class="animate text-base leading-relaxed">
+          電気通信大学の情報理工学域に通っている大学生です。
+          競技プログラミングやアプリ開発に興味があります。
+        </p>
+      </article>
+    </div>
 
+    <div class="space-y-16">
       <section class="animate space-y-6">
         <div class="flex flex-wrap gap-y-2 items-center justify-between">
-          <h5 class="font-semibold text-black dark:text-white">
+          <h5 class="font-semibold text-lg text-black dark:text-white">
             Latest posts
           </h5>
           <Link href="/blog">
@@ -110,11 +111,11 @@ const work = await Promise.all(
       </section> -->
 
       <section class="animate space-y-4">
-        <h5 class="font-semibold text-black dark:text-white">
+        <h5 class="font-semibold text-lg text-black dark:text-white">
           Connect
         </h5>
         <article>
-          <p>
+          <p class="text-base leading-relaxed">
             SNSなどのリンクです
           </p>
         </article>
