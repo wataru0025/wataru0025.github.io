@@ -1,0 +1,199 @@
+---
+import { ATCODER } from "@consts";
+import { fetchAtCoder, ratingColor } from "@lib/atcoder";
+
+const data = await fetchAtCoder(ATCODER.HANDLE);
+
+const curColor = data ? ratingColor(data.current) : null;
+const maxColor = data ? ratingColor(data.max) : null;
+
+// --- グラフの座標計算（インラインSVG、依存追加なし） ---
+type Chart = {
+  W: number;
+  H: number;
+  padL: number;
+  bands: { x: number; y: number; w: number; h: number; hex: string }[];
+  yLabels: { v: number; gy: number }[];
+  xLabels: { gx: number; label: string }[];
+  line: string;
+  coords: { cx: number; cy: number }[];
+};
+
+let chart: Chart | null = null;
+
+if (data && data.points.length > 0) {
+  const W = 720;
+  const H = 260;
+  const padL = 44;
+  const padR = 14;
+  const padT = 14;
+  const padB = 26;
+  const innerW = W - padL - padR;
+  const innerH = H - padT - padB;
+
+  const times = data.points.map((p) => new Date(p.date).getTime());
+  const tMin = times[0];
+  const tMax = times[times.length - 1];
+  const tSpan = Math.max(1, tMax - tMin);
+
+  const yMin = 0;
+  // 最高レートの1つ上の色境界まで（最低でも800）を上限にする
+  const yMax = Math.min(3200, Math.max(800, (Math.floor(data.max / 400) + 1) * 400));
+
+  const x = (t: number) => padL + ((t - tMin) / tSpan) * innerW;
+  const y = (r: number) => padT + (1 - (r - yMin) / (yMax - yMin)) * innerH;
+
+  const coords = data.points.map((p, i) => ({ cx: x(times[i]), cy: y(p.rating) }));
+  const line = coords
+    .map((c, i) => `${i === 0 ? "M" : "L"}${c.cx.toFixed(1)},${c.cy.toFixed(1)}`)
+    .join(" ");
+
+  const bands = [
+    { lo: 0, hi: 400, hex: "#808080" },
+    { lo: 400, hi: 800, hex: "#804000" },
+    { lo: 800, hi: 1200, hex: "#008000" },
+    { lo: 1200, hi: 1600, hex: "#00c0c0" },
+    { lo: 1600, hi: 2000, hex: "#0000ff" },
+    { lo: 2000, hi: 2400, hex: "#c0c000" },
+    { lo: 2400, hi: 2800, hex: "#ff8000" },
+    { lo: 2800, hi: 3200, hex: "#ff0000" },
+  ]
+    .filter((b) => b.lo < yMax)
+    .map((b) => {
+      const top = y(Math.min(b.hi, yMax));
+      const bottom = y(b.lo);
+      return { x: padL, y: top, w: innerW, h: bottom - top, hex: b.hex };
+    });
+
+  const yLabels: { v: number; gy: number }[] = [];
+  for (let v = 0; v <= yMax; v += 400) yLabels.push({ v, gy: y(v) });
+
+  const year = (t: number) => String(new Date(t).getFullYear());
+  const xLabels = [
+    { gx: x(tMin), label: year(tMin) },
+    { gx: x(tMax), label: year(tMax) },
+  ];
+
+  chart = { W, H, padL, bands, yLabels, xLabels, line, coords };
+}
+---
+
+<section class="animate space-y-4">
+  <div class="flex items-center justify-between flex-wrap gap-2">
+    <h2 class="font-semibold text-2xl text-black dark:text-white">競技プログラミング (AtCoder)</h2>
+    <a
+      href={`https://atcoder.jp/users/${ATCODER.HANDLE}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="text-sm opacity-75 hover:opacity-100 underline"
+    >
+      @{ATCODER.HANDLE}
+    </a>
+  </div>
+
+  {
+    data && curColor && maxColor ? (
+      <div class="space-y-6">
+        <div class="flex flex-wrap gap-4">
+          <div class="flex-1 min-w-[140px] p-4 bg-black/5 dark:bg-white/5 rounded-lg">
+            <div class="text-sm opacity-60 mb-1">現在レート</div>
+            <div class="flex items-baseline gap-2">
+              <span class="text-3xl font-bold" style={`color:${curColor.hex}`}>
+                {data.current}
+              </span>
+              <span
+                class="text-xs font-semibold px-2 py-0.5 rounded-full text-white"
+                style={`background:${curColor.hex}`}
+              >
+                {curColor.name}
+              </span>
+            </div>
+          </div>
+          <div class="flex-1 min-w-[140px] p-4 bg-black/5 dark:bg-white/5 rounded-lg">
+            <div class="text-sm opacity-60 mb-1">最高レート</div>
+            <div class="flex items-baseline gap-2">
+              <span class="text-3xl font-bold" style={`color:${maxColor.hex}`}>
+                {data.max}
+              </span>
+              <span
+                class="text-xs font-semibold px-2 py-0.5 rounded-full text-white"
+                style={`background:${maxColor.hex}`}
+              >
+                {maxColor.name}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {chart && (
+          <div class="p-4 bg-black/5 dark:bg-white/5 rounded-lg overflow-hidden">
+            <div class="text-sm opacity-60 mb-2">レート推移（{data.points.length} 回）</div>
+            <svg
+              viewBox={`0 0 ${chart.W} ${chart.H}`}
+              class="w-full h-auto"
+              preserveAspectRatio="xMidYMid meet"
+              role="img"
+              aria-label="AtCoderのレート推移グラフ"
+            >
+              {chart.bands.map((b) => (
+                <rect x={b.x} y={b.y} width={b.w} height={b.h} fill={b.hex} opacity="0.14" />
+              ))}
+              {chart.yLabels.map((l) => (
+                <g>
+                  <line
+                    x1={chart.padL}
+                    y1={l.gy}
+                    x2={chart.W - 14}
+                    y2={l.gy}
+                    class="stroke-black/10 dark:stroke-white/10"
+                    stroke-width="1"
+                  />
+                  <text
+                    x={chart.padL - 6}
+                    y={l.gy + 3}
+                    text-anchor="end"
+                    font-size="11"
+                    class="fill-black/50 dark:fill-white/50"
+                  >
+                    {l.v}
+                  </text>
+                </g>
+              ))}
+              {chart.xLabels.map((l) => (
+                <text
+                  x={l.gx}
+                  y={chart.H - 8}
+                  text-anchor="middle"
+                  font-size="11"
+                  class="fill-black/50 dark:fill-white/50"
+                >
+                  {l.label}
+                </text>
+              ))}
+              <path
+                d={chart.line}
+                fill="none"
+                stroke={curColor.hex}
+                stroke-width="2"
+                stroke-linejoin="round"
+                stroke-linecap="round"
+              />
+              {chart.coords.map((c) => (
+                <circle
+                  cx={c.cx}
+                  cy={c.cy}
+                  r="2.6"
+                  fill={curColor.hex}
+                  class="stroke-white dark:stroke-stone-900"
+                  stroke-width="1"
+                />
+              ))}
+            </svg>
+          </div>
+        )}
+      </div>
+    ) : (
+      <p class="opacity-60 text-sm">AtCoder のデータを取得できませんでした。</p>
+    )
+  }
+</section>

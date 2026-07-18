@@ -9,6 +9,10 @@ on:
   push:
     branches: ["main"]
 
+  # Rebuild daily so the AtCoder rating (fetched at build time) stays fresh
+  schedule:
+    - cron: "0 23 * * *" # UTC 23:00 = JST 8:00
+
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
