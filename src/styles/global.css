@@ -458,6 +458,31 @@ main {
   flex: none;
 }
 
+/* アイコン未設定の空き枠 */
+.friend-blank {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px dashed var(--line);
+  background: var(--paper);
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 15px;
+  line-height: 1;
+  color: var(--muted);
+  transition:
+    border-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.friend:hover .friend-blank {
+  border-color: var(--ai);
+  color: var(--ai);
+}
+
 .friend-name {
   font-size: 15px;
   font-weight: 500;

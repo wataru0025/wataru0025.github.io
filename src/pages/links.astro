@@ -9,7 +9,8 @@ const friends = [
   { name: "トラマト", href: "https://toramutton.me/", icon: "/icons/toramutton.jpg", note: "" },
   { name: "Fasky", href: "https://thunfasky.com/", icon: "/icons/fasky.jpg", note: "" },
   { name: "てせ", href: "https://ctes091x.net/", icon: "/icons/tese.jpg", note: "" },
-  { name: "募集中", href: "https://google.com", icon: "/icons/placeholder.png", note: "知り合い勝手に入れるかも" },
+  { name: "えぬぴー", href: "https://negapainter.work/", icon: "/icons/np.jpg", note: "" },
+  { name: "募集中", href: "https://google.com", icon: null, note: "知り合い勝手に入れるかも" },
 ];
 ---
 
@@ -26,7 +27,13 @@ const friends = [
         {
           friends.map((friend) => (
             <a class="friend" href={friend.href} target="_blank" rel="noopener noreferrer">
-              <img src={friend.icon} alt="" loading="lazy" />
+              {
+                friend.icon ? (
+                  <img src={friend.icon} alt="" loading="lazy" />
+                ) : (
+                  <span class="friend-blank" aria-hidden="true">+</span>
+                )
+              }
               <span>
                 <span class="friend-name">{friend.name}</span>
                 {friend.note && <span class="friend-note">{friend.note}</span>}
