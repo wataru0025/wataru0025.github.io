@@ -1,0 +1,17 @@
+---
+import Container from "@components/Container.astro";
+
+type Props = {
+  eyebrow?: string;
+  title: string;
+};
+
+const { eyebrow, title } = Astro.props;
+---
+
+<section class="hero hero-sm">
+  <Container>
+    {eyebrow && <p class="eyebrow animate">{eyebrow}</p>}
+    <h1 class="name name-sm animate">{title}<span class="dot">.</span></h1>
+  </Container>
+</section>

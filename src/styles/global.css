@@ -2,9 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ------------------------------------------------------------------
+   デザイントークン
+   モックの :root をそのまま移植。ダーク側は同じ藍を基準に新規作成し、
+   変数名を共通にすることで各コンポーネントのCSSは1回書けば済むようにする。
+------------------------------------------------------------------- */
+:root {
+  --paper: #f2f2ef;
+  --ink: #16181c;
+  --ink-soft: #3b3d42; /* モックで .work-desc / .now p に直書きされていた色 */
+  --muted: #7a7b76;
+  --line: #dcdcd6;
+  --ai: #1e3a8f; /* 藍 */
+  --ai-soft: #e6e9f4;
+  --weave: rgba(30, 58, 143, 0.1); /* ヒーローの織り目 */
+  --wrap: 1080px;
+}
+
+html.dark {
+  --paper: #12141b;
+  --ink: #e9e9e4;
+  --ink-soft: #b9bbc2;
+  --muted: #8a8b86;
+  --line: #2a2d35;
+  --ai: #8fa6e0; /* 藍を暗い紙の上で読める明度まで持ち上げたもの */
+  --ai-soft: #1c2338;
+  --weave: rgba(143, 166, 224, 0.1);
+}
+
 html {
   overflow-y: scroll;
   color-scheme: light;
+  -webkit-text-size-adjust: 100%;
 }
 
 html.dark {
@@ -17,47 +46,619 @@ body {
 }
 
 body {
-  @apply font-sans antialiased;
   @apply flex flex-col;
-  @apply bg-gradient-to-br from-stone-50 via-stone-100 to-stone-200 dark:from-stone-950 dark:via-stone-900 dark:to-stone-800;
-  @apply text-black/60 dark:text-white/80;
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family:
+    "Zen Kaku Gothic New", "Space Grotesk", system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.85;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
 }
 
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ai);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.wrap {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: 0 28px;
+}
+
+/* 記事本文だけは読みやすい幅に絞る */
+.wrap-narrow {
+  max-width: 720px;
+}
+
+/* ---------- ヘッダー ---------- */
 header {
-  @apply fixed top-0 left-0 right-0 z-50 py-5;
-  @apply bg-stone-50/80 dark:bg-stone-950/40;
-  @apply backdrop-blur-md saturate-150;
-  @apply border-b border-black/5 dark:border-white/5;
-  @apply shadow-sm shadow-black/5 dark:shadow-white/5;
+  @apply sticky top-0 z-50;
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(8px) saturate(150%);
+  border-bottom: 1px solid var(--line);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  flex-wrap: wrap;
+  padding: 14px 0;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+}
+
+.nav-brand {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: -0.02em;
+}
+
+.nav-brand .dot {
+  color: var(--ai);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  color: var(--muted);
+}
+
+.nav-links a {
+  transition: color 0.18s ease;
+}
+
+.nav-links a:hover,
+.nav-links a[aria-current="page"] {
+  color: var(--ai);
 }
 
 main {
-  @apply flex-1 py-32;
+  @apply flex-1;
+}
+
+/* ---------- 織り目のテクスチャ（ヒーローのみ） ---------- */
+.hero {
+  position: relative;
+  padding: 104px 0 76px;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg, var(--weave) 0 1px, transparent 1px 9px),
+    repeating-linear-gradient(90deg, var(--weave) 0 1px, transparent 1px 9px);
+  -webkit-mask-image: radial-gradient(120% 90% at 12% 8%, #000 0%, transparent 68%);
+  mask-image: radial-gradient(120% 90% at 12% 8%, #000 0%, transparent 68%);
+  pointer-events: none;
+}
+
+.hero .wrap {
+  position: relative;
+}
+
+/* 下層ページ用の低いヒーロー */
+.hero-sm {
+  padding: 56px 0 36px;
+}
+
+.eyebrow {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 26px;
+}
+
+.eyebrow::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: var(--line);
+}
+
+.name {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: clamp(56px, 11vw, 116px);
+  line-height: 0.9;
+  letter-spacing: -0.045em;
+  margin: 0;
+}
+
+.name .dot {
+  color: var(--ai);
+}
+
+/* 下層ページ見出し。記事タイトルなど日本語が入るので Zen Kaku を後ろに足し、
+   詰めすぎの字間も緩める */
+.name-sm {
+  font-family: "Space Grotesk", "Zen Kaku Gothic New", sans-serif;
+  font-size: clamp(30px, 5vw, 46px);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.tagline {
+  margin: 22px 0 0;
+  font-size: clamp(16px, 2.2vw, 19px);
+  font-weight: 500;
+  max-width: 30em;
+  line-height: 1.8;
+}
+
+.tagline em {
+  font-style: normal;
+  color: var(--ai);
+  font-weight: 700;
+}
+
+.meta {
+  margin-top: 34px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.meta span {
+  white-space: nowrap;
+}
+
+/* ---------- 2カラム ---------- */
+.main {
+  padding: 0 0 96px;
+}
+
+.cols {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 56px;
+}
+
+@media (min-width: 900px) {
+  .cols {
+    grid-template-columns: 250px 1fr;
+    gap: 72px;
+  }
+
+  .side {
+    position: sticky;
+    top: 96px;
+    align-self: start;
+  }
+}
+
+/* サイド */
+.side h2 {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 500;
+  margin: 0 0 14px;
+}
+
+.side p {
+  margin: 0 0 24px;
+  font-size: 14px;
+  line-height: 1.95;
+}
+
+.linklist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+
+.linklist li {
+  border-bottom: 1px solid var(--line);
+}
+
+.linklist a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 11px 0;
+  font-size: 13px;
+  font-family: "JetBrains Mono", monospace;
+  transition:
+    color 0.18s ease,
+    padding 0.18s ease;
+}
+
+.linklist a span {
+  color: var(--muted);
+  font-size: 11px;
+  transition: transform 0.18s ease;
+}
+
+.linklist a:hover {
+  color: var(--ai);
+  padding-left: 6px;
+}
+
+.linklist a:hover span {
+  transform: translateX(3px);
+  color: var(--ai);
+}
+
+/* セクション */
+.section {
+  margin-bottom: 76px;
+}
+
+.section:last-child {
+  margin-bottom: 0;
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin: 0 0 28px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--ink);
+}
+
+.section-head h2 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.section-head .count {
+  font-family: "JetBrains Mono", "Zen Kaku Gothic New", monospace;
+  font-size: 11px;
+  color: var(--muted);
+  margin-left: auto;
+  letter-spacing: 0.04em;
+  text-align: right;
+}
+
+/* 作品（モックにスタイルのみ存在。Worksセクションを足すとき用） */
+.work {
+  display: block;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--line);
+  position: relative;
+  transition: padding-left 0.22s ease;
+}
+
+.work::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--ai);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.22s ease;
+}
+
+.work:hover {
+  padding-left: 16px;
+}
+
+.work:hover::before {
+  transform: scaleY(1);
+}
+
+.work-top {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.work-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+.work-year {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  color: var(--muted);
+  margin-left: auto;
+}
+
+.work-desc {
+  margin: 6px 0 12px;
+  font-size: 14px;
+  color: var(--ink-soft);
+  max-width: 44em;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  padding: 3px 9px;
+  border-radius: 2px;
+  background: var(--ai-soft);
+  color: var(--ai);
+}
+
+/* リンク集（.work と同じ作法の行） */
+.friend {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+  position: relative;
+  transition: padding-left 0.22s ease;
+}
+
+.friend::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--ai);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.22s ease;
+}
+
+.friend:hover {
+  padding-left: 16px;
+}
+
+.friend:hover::before {
+  transform: scaleY(1);
+}
+
+.friend img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  flex: none;
+}
+
+.friend-name {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.friend-note {
+  display: block;
+  font-size: 12.5px;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.friend-go {
+  margin-left: auto;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  color: var(--muted);
+  transition: transform 0.18s ease;
+}
+
+.friend:hover .friend-go {
+  color: var(--ai);
+  transform: translateX(3px);
+}
+
+/* 定義リスト（PC環境やプロフィールの項目） */
+.spec {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.spec li {
+  display: flex;
+  gap: 20px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+}
+
+.spec .key {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11.5px;
+  color: var(--muted);
+  min-width: 96px;
+  padding-top: 3px;
+  letter-spacing: 0.04em;
+}
+
+/* いま（Now） */
+.now {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.now h3 {
+  font-family: "Space Grotesk", "Zen Kaku Gothic New", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0 0 4px;
+  position: relative;
+  padding-left: 16px;
+}
+
+.now h3::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 7px;
+  height: 7px;
+  background: var(--ai);
+}
+
+.now p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--ink-soft);
+  max-width: 44em;
+  padding-left: 16px;
+}
+
+/* 記事 */
+.post {
+  display: flex;
+  gap: 18px;
+  align-items: baseline;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--line);
+  transition: padding-left 0.22s ease;
+}
+
+.post:hover {
+  padding-left: 8px;
+  color: var(--ai);
+}
+
+.post time {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11.5px;
+  color: var(--muted);
+  white-space: nowrap;
+  padding-top: 2px;
+}
+
+.post-title {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.post-sub {
+  display: block;
+  font-size: 12.5px;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.more {
+  display: inline-block;
+  margin-top: 22px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  border-bottom: 1px solid var(--ai);
+  color: var(--ai);
+  padding-bottom: 2px;
+}
+
+/* 経歴 */
+.tl {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tl li {
+  display: flex;
+  gap: 20px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+}
+
+.tl time {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11.5px;
+  color: var(--muted);
+  min-width: 74px;
+  padding-top: 3px;
 }
 
 footer {
-  @apply py-5 text-sm;
+  border-top: 1px solid var(--line);
+  padding: 26px 0 40px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  color: var(--muted);
 }
 
+.footer-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* ---------- 記事本文（prose） ---------- */
 article {
-  @apply max-w-full prose dark:prose-invert prose-img:mx-auto prose-img:my-auto;
-  @apply prose-headings:font-semibold prose-p:font-serif;
-  @apply prose-headings:text-black prose-headings:dark:text-white;
+  @apply max-w-full prose prose-img:mx-auto prose-img:my-auto;
+  --tw-prose-body: var(--ink-soft);
+  --tw-prose-headings: var(--ink);
+  --tw-prose-bold: var(--ink);
+  --tw-prose-links: var(--ai);
+  --tw-prose-quotes: var(--ink);
+  --tw-prose-code: var(--ink);
+  --tw-prose-counters: var(--muted);
+  --tw-prose-bullets: var(--line);
+  --tw-prose-hr: var(--line);
+  --tw-prose-quote-borders: var(--line);
+  --tw-prose-th-borders: var(--line);
+  --tw-prose-td-borders: var(--line);
+  --tw-prose-pre-bg: var(--ai-soft);
+  --tw-prose-pre-code: var(--ink);
+  @apply prose-headings:font-semibold;
 }
 
 @layer utilities {
   article a {
-    @apply font-sans text-current underline underline-offset-2;
-    @apply decoration-black/20 dark:decoration-white/30;
+    @apply underline underline-offset-2;
+    text-decoration-color: color-mix(in srgb, var(--ai) 40%, transparent);
     @apply transition-all duration-300 ease-in-out;
   }
+
   article a:hover {
-    @apply text-black dark:text-white;
-    @apply decoration-black/40 dark:decoration-white/60;
+    text-decoration-color: var(--ai);
     @apply underline-offset-4;
   }
 }
 
+/* 読み込み時のフェードイン。Head.astro の animate() が .show を付ける */
 .animate {
   @apply opacity-0 translate-y-4;
   @apply transition-all duration-700 ease-out;
@@ -73,4 +674,17 @@ html #back-to-top {
 
 html.scrolled #back-to-top {
   @apply opacity-100 pointer-events-auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .animate {
+    @apply opacity-100 translate-y-0;
+  }
 }

@@ -2,139 +2,135 @@
 import { getCollection } from "astro:content";
 import Container from "@components/Container.astro";
 import PageLayout from "@layouts/PageLayout.astro";
-import ArrowCard from "@components/ArrowCard.astro";
-import Link from "@components/Link.astro";
-import { dateRange } from "@lib/utils";
-import { SITE, HOME, SOCIALS } from "@consts";
+import { SITE, HOME, SOCIALS, ATCODER } from "@consts";
 
-const blog = (await getCollection("blog"))
-  .filter(post => !post.data.draft)
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0,SITE.NUM_POSTS_ON_HOMEPAGE);
+const allPosts = (await getCollection("blog"))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
-const projects = (await getCollection("projects"))
-  .filter(project => !project.data.draft)
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0,SITE.NUM_PROJECTS_ON_HOMEPAGE);
+const posts = allPosts.slice(0, SITE.NUM_POSTS_ON_HOMEPAGE);
 
-const allwork = (await getCollection("work"))
-  .sort((a, b) => new Date(b.data.dateStart).valueOf() - new Date(a.data.dateStart).valueOf())
-  .slice(0,SITE.NUM_WORKS_ON_HOMEPAGE);
+// SOCIALS の NAME はアイコン名なので、表示用のラベルだけここで当てる
+const socialLabels: Record<string, string> = {
+  "twitter-x": "X / Twitter",
+  github: "GitHub",
+};
 
-const work = await Promise.all(
-  allwork.map(async (item) => {
-    const { Content } = await item.render();
-    return { ...item, Content };
-  })
-);
+const sideLinks = [
+  ...SOCIALS.map((social) => ({
+    label: socialLabels[social.NAME] ?? social.NAME,
+    href: social.HREF,
+  })),
+  { label: "AtCoder", href: `https://atcoder.jp/users/${ATCODER.HANDLE}` },
+];
 
+const now = [
+  {
+    title: "競技プログラミング",
+    body: "AtCoder を中心に精進中。ICPC は 2026 の国内予選に出場しました。",
+  },
+  {
+    title: "Web アプリを作る練習",
+    body: "このサイトを Astro で自作したのが最近の成果物。次は何か役に立つアプリを作り切るのが目標です。",
+  },
+];
+
+const timeline = [
+  { year: "2026", body: "ICPC 2026 国内予選に出場" },
+  { year: "2026", body: "基本情報技術者試験に合格" },
+  { year: "2025", body: "個人サイトを公開" },
+  { year: "2025", body: "電気通信大学 情報理工学域 入学" },
+  { year: "2024", body: "駿台お茶の水校 入学（浪人）" },
+];
 ---
 
 <PageLayout title={HOME.TITLE} description={HOME.DESCRIPTION}>
-  <Container>
-    <div class="space-y-3 mb-8">
-      <h4 class="animate font-semibold text-2xl text-black dark:text-white">
-        Cotton's Homepage <span class="text-2xl">👋🏻</span>
-      </h4>
-      <article class="space-y-4">
-        <p class="animate text-base leading-relaxed">
-          電気通信大学の情報理工学域に通っている大学生です。
-          競技プログラミングやアプリ開発に興味があります。
+  <section class="hero">
+    <Container>
+      <p class="eyebrow animate">電気通信大学 情報理工学域</p>
+      <h1 class="name animate">cotton<span class="dot">.</span></h1>
+      <p class="tagline animate">
+        アプリ開発、<em>競技プログラミング</em>に興味があります。
+      </p>
+      <div class="meta animate">
+        <span>Tokyo, Japan</span>
+        <span>ICPC 2026 国内予選 参加</span>
+        <span>競技プログラミング / 個人開発</span>
+      </div>
+    </Container>
+  </section>
+
+  <div class="main">
+    <Container class="cols">
+      <aside class="side animate">
+        <h2>About</h2>
+        <p>
+          電気通信大学、情報理工学域に通う大学生です。最近は競技プログラミングにはまっています。
         </p>
-      </article>
-    </div>
-
-    <div class="space-y-16">
-      <section class="animate space-y-6">
-        <div class="flex flex-wrap gap-y-2 items-center justify-between">
-          <h5 class="font-semibold text-lg text-black dark:text-white">
-            Latest posts
-          </h5>
-          <Link href="/blog">
-            See all posts
-          </Link>
-        </div>
-        <ul class="flex flex-col gap-4">
-          {blog.map(post => (
-            <li>
-              <ArrowCard entry={post} />
-            </li>
-          ))}
+        <ul class="linklist">
+          {
+            sideLinks.map((link) => (
+              <li>
+                <a href={link.href} target="_blank" rel="noopener noreferrer">
+                  {link.label} <span>↗</span>
+                </a>
+              </li>
+            ))
+          }
         </ul>
-      </section>
+      </aside>
 
-      <!-- <section class="animate space-y-6">
-        <div class="flex flex-wrap gap-y-2 items-center justify-between">
-          <h5 class="font-semibold text-black dark:text-white">
-            Work Experience
-          </h5>
-          <Link href="/work">
-            See all work
-          </Link>
-        </div>
-        <ul class="flex flex-col space-y-4">
-          {work.map(entry => (
-            <li>
-              <div class="text-sm opacity-75">
-                {dateRange(entry.data.dateStart, entry.data.dateEnd)}
+      <div class="content">
+        <section class="section animate">
+          <div class="section-head">
+            <h2>Now</h2>
+            <span class="count">いま手を動かしていること</span>
+          </div>
+          {
+            now.map((item) => (
+              <div class="now">
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
               </div>
-              <div class="font-semibold text-black dark:text-white">
-                {entry.data.company}
-              </div>
-              <div class="text-sm opacity-75">
-                {entry.data.role}
-              </div>
-              <article>
-                <entry.Content />
-              </article>
-            </li>
-          ))}
-        </ul>
-      </section> -->
+            ))
+          }
+        </section>
 
-      <!-- <section class="animate space-y-6">
-        <div class="flex flex-wrap gap-y-2 items-center justify-between">
-          <h5 class="font-semibold text-black dark:text-white">
-            Recent projects
-          </h5>
-          <Link href="/projects">
-            See all projects
-          </Link>
-        </div>
-        <ul class="flex flex-col gap-4">
-          {projects.map(project => (
-            <li>
-              <ArrowCard entry={project} />
-            </li>
-          ))}
-        </ul>
-      </section> -->
+        <section class="section animate">
+          <div class="section-head">
+            <h2>Notes</h2>
+            <span class="count">{String(allPosts.length).padStart(2, "0")}</span>
+          </div>
+          {
+            posts.map((post) => (
+              <a class="post" href={`/blog/${post.slug}`}>
+                <time datetime={post.data.date.toISOString()}>
+                  {post.data.date.getFullYear()}
+                </time>
+                <span class="post-title">
+                  {post.data.title}
+                  <span class="post-sub">{post.data.description}</span>
+                </span>
+              </a>
+            ))
+          }
+          <a class="more" href="/blog">すべての記事を見る →</a>
+        </section>
 
-      <section class="animate space-y-4">
-        <h5 class="font-semibold text-lg text-black dark:text-white">
-          Connect
-        </h5>
-        <article>
-          <p class="text-base leading-relaxed">
-            SNSなどのリンクです
-          </p>
-        </article>
-        <ul class="flex flex-wrap gap-2">
-          {SOCIALS.map(SOCIAL => (
-            <li class="flex gap-x-2 text-nowrap">
-              <Link href={SOCIAL.HREF} external aria-label={`${SITE.NAME} on ${SOCIAL.NAME}`}>
-                {SOCIAL.NAME}
-              </Link>
-              {"/"}
-            </li>
-          ))}
-          <li class="line-clamp-1">
-            <Link href={`mailto:${SITE.EMAIL}`} aria-label={`Email ${SITE.NAME}`}>
-              {SITE.EMAIL}
-            </Link>
-          </li>
-        </ul>
-      </section>
-    </div>
-  </Container>
+        <section class="section animate">
+          <div class="section-head"><h2>Timeline</h2></div>
+          <ul class="tl">
+            {
+              timeline.map((item) => (
+                <li>
+                  <time>{item.year}</time>
+                  <span>{item.body}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </section>
+      </div>
+    </Container>
+  </div>
 </PageLayout>

@@ -78,16 +78,16 @@ if (data && data.points.length > 0) {
 }
 ---
 
-<section class="animate space-y-4">
-  <div class="flex items-center justify-between flex-wrap gap-2">
-    <h2 class="font-semibold text-2xl text-black dark:text-white">競技プログラミング (AtCoder)</h2>
+<section class="section animate">
+  <div class="section-head">
+    <h2>AtCoder</h2>
     <a
       href={`https://atcoder.jp/users/${ATCODER.HANDLE}`}
       target="_blank"
       rel="noopener noreferrer"
-      class="text-sm opacity-75 hover:opacity-100 underline"
+      class="count hover:text-ai"
     >
-      @{ATCODER.HANDLE}
+      @{ATCODER.HANDLE} ↗
     </a>
   </div>
 
@@ -95,8 +95,8 @@ if (data && data.points.length > 0) {
     data && curColor && maxColor ? (
       <div class="space-y-6">
         <div class="flex flex-wrap gap-4">
-          <div class="flex-1 min-w-[140px] p-4 bg-black/5 dark:bg-white/5 rounded-lg">
-            <div class="text-sm opacity-60 mb-1">現在レート</div>
+          <div class="flex-1 min-w-[140px] p-4 border border-line rounded-sm">
+            <div class="font-mono text-[11px] tracking-wider uppercase text-muted mb-1">現在レート</div>
             <div class="flex items-baseline gap-2">
               <span class="text-3xl font-bold" style={`color:${curColor.hex}`}>
                 {data.current}
@@ -109,8 +109,8 @@ if (data && data.points.length > 0) {
               </span>
             </div>
           </div>
-          <div class="flex-1 min-w-[140px] p-4 bg-black/5 dark:bg-white/5 rounded-lg">
-            <div class="text-sm opacity-60 mb-1">最高レート</div>
+          <div class="flex-1 min-w-[140px] p-4 border border-line rounded-sm">
+            <div class="font-mono text-[11px] tracking-wider uppercase text-muted mb-1">最高レート</div>
             <div class="flex items-baseline gap-2">
               <span class="text-3xl font-bold" style={`color:${maxColor.hex}`}>
                 {data.max}
@@ -126,8 +126,10 @@ if (data && data.points.length > 0) {
         </div>
 
         {chart && (
-          <div class="p-4 bg-black/5 dark:bg-white/5 rounded-lg overflow-hidden">
-            <div class="text-sm opacity-60 mb-2">レート推移（{data.points.length} 回）</div>
+          <div class="p-4 border border-line rounded-sm overflow-hidden">
+            <div class="font-mono text-[11px] tracking-wider uppercase text-muted mb-2">
+              レート推移（{data.points.length} 回）
+            </div>
             <svg
               viewBox={`0 0 ${chart.W} ${chart.H}`}
               class="w-full h-auto"
@@ -145,7 +147,7 @@ if (data && data.points.length > 0) {
                     y1={l.gy}
                     x2={chart.W - 14}
                     y2={l.gy}
-                    class="stroke-black/10 dark:stroke-white/10"
+                    class="stroke-line"
                     stroke-width="1"
                   />
                   <text
@@ -153,7 +155,7 @@ if (data && data.points.length > 0) {
                     y={l.gy + 3}
                     text-anchor="end"
                     font-size="11"
-                    class="fill-black/50 dark:fill-white/50"
+                    class="fill-muted"
                   >
                     {l.v}
                   </text>
@@ -165,7 +167,7 @@ if (data && data.points.length > 0) {
                   y={chart.H - 8}
                   text-anchor="middle"
                   font-size="11"
-                  class="fill-black/50 dark:fill-white/50"
+                  class="fill-muted"
                 >
                   {l.label}
                 </text>
@@ -184,7 +186,7 @@ if (data && data.points.length > 0) {
                   cy={c.cy}
                   r="2.6"
                   fill={curColor.hex}
-                  class="stroke-white dark:stroke-stone-900"
+                  class="stroke-paper"
                   stroke-width="1"
                 />
               ))}
@@ -193,7 +195,7 @@ if (data && data.points.length > 0) {
         )}
       </div>
     ) : (
-      <p class="opacity-60 text-sm">AtCoder のデータを取得できませんでした。</p>
+      <p class="text-muted text-sm">AtCoder のデータを取得できませんでした。</p>
     )
   }
 </section>

@@ -10,12 +10,13 @@ export const SITE: Site = {
 
 export const HOME: Metadata = {
   TITLE: "Home",
-  DESCRIPTION: "Astro Nano is a minimal and lightweight blog and portfolio.",
+  DESCRIPTION:
+    "電気通信大学の学生 cotton の個人サイト。競技プログラミングと個人開発、その途中で考えたことを書いています。",
 };
 
 export const BLOG: Metadata = {
-  TITLE: "Blog",
-  DESCRIPTION: "A collection of articles on topics I am passionate about.",
+  TITLE: "Notes",
+  DESCRIPTION: "競技プログラミングや個人開発、大学のことなどの記録。",
 };
 
 export const WORK: Metadata = {

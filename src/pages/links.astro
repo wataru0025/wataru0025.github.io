@@ -1,128 +1,41 @@
 ---
 import PageLayout from "@layouts/PageLayout.astro";
 import Container from "@components/Container.astro";
-import { SITE } from "@consts";
+import PageHero from "@components/PageHero.astro";
+
+const friends = [
+  { name: "しおり", href: "https://shiori-02-14.github.io/Homepage/", icon: "/icons/shiori.jpg", note: "" },
+  { name: "柴犬被り", href: "https://memo.shibadogcap.com/", icon: "/icons/shiba.jpg", note: "" },
+  { name: "トラマト", href: "https://toramutton.me/", icon: "/icons/toramutton.jpg", note: "" },
+  { name: "Fasky", href: "https://thunfasky.com/", icon: "/icons/fasky.jpg", note: "" },
+  { name: "てせ", href: "https://ctes091x.net/", icon: "/icons/tese.jpg", note: "" },
+  { name: "募集中", href: "https://google.com", icon: "/icons/placeholder.png", note: "知り合い勝手に入れるかも" },
+];
 ---
 
-<PageLayout title="Links" description="Friends and other interesting sites">
-  <Container>
-    <h1 class="font-semibold text-3xl mb-8 text-black dark:text-white animate">Links</h1>
-    <div class="space-y-4">
-      <a
-        href="https://shiori-02-14.github.io/Homepage/"
-        target="_blank"
-        class="block p-5 border border-black/10 dark:border-white/15 rounded-xl bg-white/40 dark:bg-white/5 hover:bg-white/60 dark:hover:bg-white/10 hover:border-black/20 dark:hover:border-white/25 transition-all duration-300 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-white/5 backdrop-blur-sm animate group"
-      >
-        <div class="flex items-center gap-4">
-          <img
-            src="/icons/shiori.jpg"
-            alt="しおり"
-            class="w-14 h-14 rounded-full object-cover shadow-lg ring-2 ring-black/10 dark:ring-white/20 group-hover:scale-105 transition-transform duration-300"
-            loading="lazy"
-          />
-          <div class="space-y-1">
-            <h3 class="font-semibold text-lg text-black dark:text-white">しおり</h3>
-            <p class="text-sm opacity-75"></p>
-          </div>
-        </div>
-      </a>
-      
-      <a
-        href="https://memo.shibadogcap.com/"
-        target="_blank"
-        class="block p-5 border border-black/10 dark:border-white/15 rounded-xl bg-white/40 dark:bg-white/5 hover:bg-white/60 dark:hover:bg-white/10 hover:border-black/20 dark:hover:border-white/25 transition-all duration-300 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-white/5 backdrop-blur-sm animate group"
-      >
-        <div class="flex items-center gap-4">
-          <img
-            src="/icons/shiba.jpg"
-            alt="柴犬被り"
-            class="w-14 h-14 rounded-full object-cover shadow-lg ring-2 ring-black/10 dark:ring-white/20 group-hover:scale-105 transition-transform duration-300"
-            loading="lazy"
-          />
-          <div class="space-y-1">
-            <h3 class="font-semibold text-lg text-black dark:text-white">柴犬被り</h3>
-            <p class="text-sm opacity-75"></p>
-          </div>
-        </div>
-      </a>
+<PageLayout title="Links" description="友人のサイトなど、行き先のリスト">
+  <PageHero eyebrow="行き先" title="Links" />
 
-      <a
-        href="https://toramutton.me/"
-        target="_blank"
-        class="block p-5 border border-black/10 dark:border-white/15 rounded-xl bg-white/40 dark:bg-white/5 hover:bg-white/60 dark:hover:bg-white/10 hover:border-black/20 dark:hover:border-white/25 transition-all duration-300 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-white/5 backdrop-blur-sm animate group"
-      >
-        <div class="flex items-center gap-4">
-          <img
-            src="/icons/toramutton.jpg"
-            alt="トラマト"
-            class="w-14 h-14 rounded-full object-cover shadow-lg ring-2 ring-black/10 dark:ring-white/20 group-hover:scale-105 transition-transform duration-300"
-            loading="lazy"
-          />
-          <div class="space-y-1">
-            <h3 class="font-semibold text-lg text-black dark:text-white">トラマト</h3>
-            <p class="text-sm opacity-75"></p>
-          </div>
+  <div class="main">
+    <Container>
+      <section class="section animate">
+        <div class="section-head">
+          <h2>Friends</h2>
+          <span class="count">{String(friends.length).padStart(2, "0")}</span>
         </div>
-      </a>
-
-      <a
-        href="https://thunfasky.com/"
-        target="_blank"
-        class="block p-5 border border-black/10 dark:border-white/15 rounded-xl bg-white/40 dark:bg-white/5 hover:bg-white/60 dark:hover:bg-white/10 hover:border-black/20 dark:hover:border-white/25 transition-all duration-300 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-white/5 backdrop-blur-sm animate group"
-      >
-        <div class="flex items-center gap-4">
-          <img
-            src="/icons/fasky.jpg"
-            alt="Fasky"
-            class="w-14 h-14 rounded-full object-cover shadow-lg ring-2 ring-black/10 dark:ring-white/20 group-hover:scale-105 transition-transform duration-300"
-            loading="lazy"
-          />
-          <div class="space-y-1">
-            <h3 class="font-semibold text-lg text-black dark:text-white">Fasky</h3>
-            <p class="text-sm opacity-75"></p>
-          </div>
-        </div>
-      </a>
-
-      <a
-        href="https://ctes091x.net/"
-        target="_blank"
-        class="block p-5 border border-black/10 dark:border-white/15 rounded-xl bg-white/40 dark:bg-white/5 hover:bg-white/60 dark:hover:bg-white/10 hover:border-black/20 dark:hover:border-white/25 transition-all duration-300 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-white/5 backdrop-blur-sm animate group"
-      >
-        <div class="flex items-center gap-4">
-          <img
-            src="/icons/tese.jpg"
-            alt="てせ"
-            class="w-14 h-14 rounded-full object-cover shadow-lg ring-2 ring-black/10 dark:ring-white/20 group-hover:scale-105 transition-transform duration-300"
-            loading="lazy"
-          />
-          <div class="space-y-1">
-            <h3 class="font-semibold text-lg text-black dark:text-white">てせ</h3>
-            <p class="text-sm opacity-75"></p>
-          </div>
-        </div>
-      </a>
-
-      <a
-        href="https://google.com"
-        target="_blank"
-        class="block p-5 border border-black/10 dark:border-white/15 rounded-xl bg-white/40 dark:bg-white/5 hover:bg-white/60 dark:hover:bg-white/10 hover:border-black/20 dark:hover:border-white/25 transition-all duration-300 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-white/5 backdrop-blur-sm animate group"
-      >
-        <div class="flex items-center gap-4">
-          <img
-            src="/icons/placeholder.png"
-            alt="募集中"
-            class="w-14 h-14 rounded-full object-cover shadow-lg ring-2 ring-black/10 dark:ring-white/20 group-hover:scale-105 transition-transform duration-300"
-            loading="lazy"
-          />
-          <div class="space-y-1">
-            <h3 class="font-semibold text-lg text-black dark:text-white">募集中</h3>
-            <p class="text-sm opacity-75">知り合い勝手に入れるかも</p>
-          </div>
-        </div>
-      </a>
-
-      </div>
-
-  </Container>
+        {
+          friends.map((friend) => (
+            <a class="friend" href={friend.href} target="_blank" rel="noopener noreferrer">
+              <img src={friend.icon} alt="" loading="lazy" />
+              <span>
+                <span class="friend-name">{friend.name}</span>
+                {friend.note && <span class="friend-note">{friend.note}</span>}
+              </span>
+              <span class="friend-go">↗</span>
+            </a>
+          ))
+        }
+      </section>
+    </Container>
+  </div>
 </PageLayout>

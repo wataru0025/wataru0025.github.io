@@ -2,55 +2,58 @@
 import { type CollectionEntry, getCollection } from "astro:content";
 import PageLayout from "@layouts/PageLayout.astro";
 import Container from "@components/Container.astro";
-import ArrowCard from "@components/ArrowCard.astro";
+import PageHero from "@components/PageHero.astro";
 import { BLOG } from "@consts";
 
 const data = (await getCollection("blog"))
-  .filter(post => !post.data.draft)
+  .filter((post) => !post.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-  
+
 type Acc = {
   [year: string]: CollectionEntry<"blog">[];
-}
+};
 
 const posts = data.reduce((acc: Acc, post) => {
-    const year = post.data.date.getFullYear().toString();
-    if (!acc[year]) {
-      acc[year] = [];
-    }
-    acc[year].push(post);
-    return acc;
-  }, {});
+  const year = post.data.date.getFullYear().toString();
+  if (!acc[year]) {
+    acc[year] = [];
+  }
+  acc[year].push(post);
+  return acc;
+}, {});
 
-const years = Object.keys(posts).sort((a, b) => parseInt(b) - parseInt(a)); 
+const years = Object.keys(posts).sort((a, b) => parseInt(b) - parseInt(a));
+
+const formatDay = (date: Date) =>
+  `${String(date.getMonth() + 1).padStart(2, "0")}.${String(date.getDate()).padStart(2, "0")}`;
 ---
 
 <PageLayout title={BLOG.TITLE} description={BLOG.DESCRIPTION}>
-  <Container>
-    <div class="space-y-10">
-      <div class="animate font-semibold text-3xl text-black dark:text-white">
-        Blog
-      </div>
-      <div class="space-y-8">
-        {years.map(year => (
-          <section class="animate space-y-4">
-            <div class="font-semibold text-xl text-black dark:text-white">
-              {year}
+  <PageHero eyebrow="書いたもの" title="Notes" />
+
+  <div class="main">
+    <Container>
+      {
+        years.map((year) => (
+          <section class="section animate">
+            <div class="section-head">
+              <h2>{year}</h2>
+              <span class="count">{String(posts[year].length).padStart(2, "0")}</span>
             </div>
-            <div>
-              <ul class="flex flex-col gap-4">
-                {
-                  posts[year].map((post) => (
-                    <li>
-                      <ArrowCard entry={post}/>
-                    </li>
-                  ))
-                }
-              </ul>
-            </div>
+            {posts[year].map((post) => (
+              <a class="post" href={`/blog/${post.slug}`}>
+                <time datetime={post.data.date.toISOString()}>
+                  {formatDay(post.data.date)}
+                </time>
+                <span class="post-title">
+                  {post.data.title}
+                  <span class="post-sub">{post.data.description}</span>
+                </span>
+              </a>
+            ))}
           </section>
-        ))}
-      </div>
-    </div>
-  </Container>
+        ))
+      }
+    </Container>
+  </div>
 </PageLayout>

@@ -1,7 +1,13 @@
 ---
+type Props = {
+  /** 記事本文など、読みやすい幅に絞りたいときに true */
+  narrow?: boolean;
+  class?: string;
+};
 
+const { narrow = false, class: className = "" } = Astro.props;
 ---
 
-<div class="mx-auto max-w-screen-sm px-5">
+<div class:list={["wrap", { "wrap-narrow": narrow }, className]}>
   <slot />
 </div>
