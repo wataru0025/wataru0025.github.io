@@ -5,8 +5,9 @@ import Container from "@components/Container.astro";
 import PageHero from "@components/PageHero.astro";
 import { BLOG } from "@consts";
 
+// 下書きは開発サーバーでだけ一覧に出す。本番ビルドには含めない
 const data = (await getCollection("blog"))
-  .filter((post) => !post.data.draft)
+  .filter((post) => import.meta.env.DEV || !post.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
 type Acc = {
@@ -46,6 +47,7 @@ const formatDay = (date: Date) =>
                   {formatDay(post.data.date)}
                 </time>
                 <span class="post-title">
+                  {post.data.draft && <span class="tag">下書き</span>}
                   {post.data.title}
                   <span class="post-sub">{post.data.description}</span>
                 </span>

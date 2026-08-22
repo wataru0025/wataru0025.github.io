@@ -20,3 +20,6 @@ pnpm-debug.log*
 
 # macOS-specific files
 .DS_Store
+
+# 下書き (ローカル専用。公開リポジトリに載せない)
+src/content/blog/drafts/
